@@ -1,0 +1,42 @@
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header class="login-header">
+            <div class="header-icon">
+                <mat-icon color="primary">dashboard</mat-icon>
+            </div>
+            <mat-card-title class="app-title">Tracker Board</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="login-content">
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Email Address</mat-label>
+                    <input matInput type="email" formControlName="email" placeholder="name@company.com" required>
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is
+                        <strong>required</strong></mat-error>
+                    <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email
+                        address</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <!-- <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required> -->
+                    <input matInput type="password" formControlName="password" required>
+                    <mat-icon matSuffix>password</mat-icon>
+                    <!-- <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button> -->
+                    <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is
+                        <strong>required</strong></mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" type="submit" class="submit-btn"
+                    [disabled]="loginForm.invalid">
+                    LOG IN
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

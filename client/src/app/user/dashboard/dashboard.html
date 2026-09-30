@@ -1,0 +1,70 @@
+<app-navbar></app-navbar>
+<div class="root-board">
+    <div class="board-header">
+        <div class="header-analytics">
+            <div class="analytics-badge tasks-stat">
+                <div class="badge-icon">
+                    <mat-icon>assignment</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Total Tasks</span>
+                    <span class="badge-value">{{ totalTasks }}</span>
+                </div>
+            </div>
+
+            <div class="analytics-badge points-stat">
+                <div class="badge-icon">
+                    <mat-icon>analytics</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Total Story Points</span>
+                    <span class="badge-value">{{ totalStoryPoints }}</span>
+                </div>
+            </div>
+            <div class="analytics-badge points-stat">
+                <div class="badge-icon">
+                    <mat-icon>analytics</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Daily Story Limit</span>
+                    <span class="badge-value">{{ settings.daily_point_limit }}</span>
+                </div>
+            </div>
+            <div class="analytics-badge points-stat">
+                <div class="badge-icon">
+                    <mat-icon>analytics</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Weekly Story Limit</span>
+                    <span class="badge-value">{{ settings.weekly_point_limit }}</span>
+                </div>
+            </div>
+            <div class="analytics-badge points-stat">
+                <div class="badge-icon">
+                    <mat-icon>analytics</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Planned Today</span>
+                    <span class="badge-value">{{ dailyPlannedPoints }}</span>
+                </div>
+            </div>
+            <div class="analytics-badge points-stat">
+                <div class="badge-icon">
+                    <mat-icon>analytics</mat-icon>
+                </div>
+                <div class="badge-content">
+                    <span class="badge-label">Planned This Week</span>
+                    <span class="badge-value">{{ weeklyPlannedPoints }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button mat-flat-button color="primary" class="add-btn" (click)="addTask()">
+                <mat-icon>add</mat-icon>
+                <span>Add Task</span>
+            </button>
+        </div>
+    </div>
+</div>
+<app-kanban-board [boardData]="boardData" [settings]="settings"></app-kanban-board>

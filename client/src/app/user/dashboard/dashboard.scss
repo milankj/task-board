@@ -1,0 +1,155 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+app-kanban-board {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.root-board {
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+
+  .header-analytics {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+
+    .analytics-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+
+      .badge-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      &.tasks-stat .badge-icon {
+        background: #e0e7ff;
+        color: #4338ca;
+      }
+
+      &.points-stat .badge-icon {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      .badge-content {
+        display: flex;
+        flex-direction: column;
+
+        .badge-label {
+          font-size: 0.65rem;
+          font-weight: 600;
+          color: #64748b;
+          text-transform: uppercase;
+        }
+
+        .badge-value {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: #0f172a;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+
+      &:focus-within {
+        border-color: #6366f1;
+        background: #fff;
+      }
+
+      .search-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: #64748b;
+        margin-right: 0.3rem;
+      }
+
+      .search-input {
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 0.85rem;
+        color: #0f172a;
+        width: 160px;
+      }
+
+      .clear-search-btn {
+        border: none;
+        background: transparent;
+        color: #94a3b8;
+        cursor: pointer;
+        display: flex;
+        padding: 0;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      border-radius: 8px;
+      font-weight: 600;
+      height: 36px;
+    }
+  }
+}

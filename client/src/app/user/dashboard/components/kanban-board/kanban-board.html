@@ -1,0 +1,62 @@
+<div class="root-board" cdkDropListGroup>
+    <div class="board">
+        <div class="board-wrapper">
+            <div class="board-columns">
+
+                <div class="board-column" *ngFor="let column of boardData.columns; let i = index">
+
+                    <div class="column-header">
+                        <div class="column-header-title">
+                            <span class="column-badge" [class]="'badge-' + column.id"></span>
+                            <h2 class="column-name">{{ column.name }}</h2>
+                            <span class="task-count">{{ getTasksInCol(column).length }}</span>
+                        </div>
+                    </div>
+
+                    <div class="tasks-container" cdkDropList [cdkDropListData]="column.tasks"
+                        (cdkDropListDropped)="drop($event,column)">
+
+                        <div class="task" *ngFor="let item of getTasksInCol(column)" cdkDrag [cdkDragData]="item">
+
+                            <div class="task-placeholder" *cdkDragPlaceholder></div>
+
+                            <div class="task-content">
+                                <div class="task-top-row">
+                                    <span class="task-title" [title]="item.task_name">{{ item.task_name }}</span>
+                                    <button class="edit-btn" (click)="editTask(item, $event)" title="Edit Task">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </div>
+
+                                <div class="task-middle-section">
+                                    <span class="priority-badge" [class]="'priority-' + item.priority">
+                                        {{ item.priority }}
+                                    </span>
+                                </div>
+
+                                <div class="task-bottom-row">
+                                    <span class="story-points">
+                                        <mat-icon class="meta-icon">analytics</mat-icon>
+                                        <span>{{ item.story_point }} {{ item.story_point === 1 ? 'pt' : 'pts' }}</span>
+                                    </span>
+                                    <span class="task-date" *ngIf="item.planned_date">
+                                        <mat-icon class="meta-icon">event</mat-icon>
+                                        <span>{{ moment(item.planned_date).format('Do MMM') }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty Container Placeholder -->
+                        <div class="empty-column-placeholder" *ngIf="getTasksInCol(column).length === 0">
+                            <mat-icon>inbox</mat-icon>
+                            <span>No tasks in {{ column.name }}</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
