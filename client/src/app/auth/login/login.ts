@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,7 @@ export class Login implements OnInit {
     private fb: FormBuilder,
     private _authService: AuthService,
     private _router: Router,
+    private _notification: NotificationService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -51,10 +53,12 @@ export class Login implements OnInit {
       this._authService
         .loginUser(this.loginForm.value.email, this.loginForm.value.password)
         .then((res) => {
+          this._notification.success("Login Successfull");
           this._router.navigateByUrl('/user/dashboard');
         })
         .catch((err) => {
           console.log('Error Logging In', err);
+          this._notification.error(err.error.error || 'Login Failed');
         });
     }
   }

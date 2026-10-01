@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -12,7 +12,7 @@ import { UserService } from '../../../user.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import moment from 'moment';
 import { NotificationService } from '../../../../shared/services/notification.service';
-
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-kanban-board',
@@ -42,14 +42,17 @@ export class KanbanBoard implements OnInit {
   public name = 'Tracker Board';
   public searchQuery = '';
 
+  private _unsubscribeAll: Subject<any>;
+
   constructor(
     private dialog: MatDialog,
     private _userService: UserService,
-    private cdr: ChangeDetectorRef,
     private _notification: NotificationService,
-  ) { }
+  ) {
+      this._unsubscribeAll = new Subject();
+   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     console.log('Kanban Board initialized:', this.boardData);
   }
 
@@ -63,15 +66,15 @@ export class KanbanBoard implements OnInit {
     }, 0);
   }
 
-  public getTasksInCol(column: BoardColumn): Task[] {
+  getTasksInCol(column: BoardColumn): Task[] {
     return column.tasks;
   }
 
-  public dropGrid(event: CdkDragDrop<BoardColumn[]>): void {
+  dropGrid(event: CdkDragDrop<BoardColumn[]>): void {
     moveItemInArray(this.boardData.columns, event.previousIndex, event.currentIndex);
   }
 
-  public drop(event: CdkDragDrop<any[]>, column: BoardColumn): void {
+  drop(event: CdkDragDrop<any[]>, column: BoardColumn): void {
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -92,7 +95,8 @@ export class KanbanBoard implements OnInit {
 
       this._userService.updateTaskStatus(task.tasks_id, {
         status: newStatus
-      }).subscribe({
+      }).pipe(takeUntil(this._unsubscribeAll))
+        .subscribe({
         next: (res) => {
           if (res && res.data) {
             Object.assign(task, res.data);
@@ -100,7 +104,6 @@ export class KanbanBoard implements OnInit {
             task.status = newStatus;
           }
           this._userService.notifyTaskListChange(this.boardData.columns);
-          this.cdr.detectChanges();
         },
 
         error: (error) => {
@@ -122,7 +125,6 @@ export class KanbanBoard implements OnInit {
 
           // Restore previous state & notify task list subscribers
           this._userService.notifyTaskListChange(this.boardData.columns);
-          this.cdr.detectChanges();
           this._notification.error(error.error.message || "Failed to Move Task");
 
         }
@@ -133,15 +135,15 @@ export class KanbanBoard implements OnInit {
 
   }
 
-  public getTaskTitle(item: Task): string {
+  getTaskTitle(item: Task): string {
     return item && item.task_name ? item.task_name : "";
   }
 
-  public getTaskTag(item: Task): string {
+  getTaskTag(item: Task): string {
     return item && item.priority ? item.priority : "";
   }
 
-  public editTask(task: Task, event?: Event): void {
+  editTask(task: Task, event?: Event): void {
     if (event) {
       event.stopPropagation();
     }
@@ -164,6 +166,11 @@ export class KanbanBoard implements OnInit {
         this._notification.error(error.error.message || 'Failed To Edit Task');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(0);
+    this._unsubscribeAll.complete();
   }
 
 }
